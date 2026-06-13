@@ -1461,4 +1461,3 @@ export default function Fanbassy() {
   );
 }
 
-export default Predicto;
