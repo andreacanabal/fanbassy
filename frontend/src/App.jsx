@@ -1,5 +1,5 @@
 
-import { useState, useEffect, useCallback, useRef, createContext, useContext } from "react";
+import React, { useState, useEffect, useCallback, useRef, createContext, useContext } from "react";
 import { api, setToken, getToken, clearToken, wsConnect, wsDisconnect } from "./api.js";
 
 // ── DB
