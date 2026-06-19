@@ -733,9 +733,9 @@ const PredCard = React.memo(function PredCard({ pred, onVote, onExpire, t = T.es
       {isTrip && pred.tripleLabel && isOpen && <div className="pred-notice">Si sale "{pred.tripleLabel}": el fondo va a Fanbassy</div>}
       {isJP && isOpen && <div className="pred-notice">Si ocurre: Fanbassy toma el 50%. Si no: el pool se reparte normal.</div>}
       <div className="pred-meta">
-        <span>{t.pool}:</span><span className="pool-val">${pred.totalPool.toFixed(2)}</span>
+        <span>{t.pool}:</span><span className="pool-val">${(pred.totalPool || 0).toFixed(2)}</span>
         <span>-</span><span>{totalV} {t.votes}</span>
-        {voted && <span style={{color:"var(--blue)"}}>- {t.yourBet}: ${pred.userBet.amount.toFixed(2)}</span>}
+        {voted && <span style={{color:"var(--blue)"}}>- {t.yourBet}: ${(pred.userBet && pred.userBet.amount ? pred.userBet.amount : 0).toFixed(2)}</span>}
       </div>
       <div className="opts-grid" style={{gridTemplateColumns:"repeat(" + pred.options.length + ",1fr)"}}>
         {pred.options.map((opt, idx) => {
@@ -751,7 +751,7 @@ const PredCard = React.memo(function PredCard({ pred, onVote, onExpire, t = T.es
                 <div className="opt-pct">{pct}%</div>
               </div>
               <div className="bar-track"><div className="bar-fill" style={{width:pct+"%"}} /></div>
-              <div className="opt-sub">{pred.votes[idx]} - ${pred.pools[idx].toFixed(2)}</div>
+              <div className="opt-sub">{pred.votes[idx]} - ${(pred.pools[idx] || 0).toFixed(2)}</div>
             </button>
           );
         })}
@@ -940,7 +940,7 @@ function WalletModal({ onClose }) {
                     <div style={{fontFamily:"var(--fm)",fontSize:10,color:"var(--muted2)"}}>{fmtTime(tx.createdAt)}</div>
                   </div>
                 </div>
-                <div style={{fontFamily:"var(--fm)",fontSize:13,fontWeight:700,color:tx.amount>0?"var(--green)":"var(--red)"}}>{(tx.amount>0?"+":"") + Math.abs(tx.amount).toFixed(2)}</div>
+                <div style={{fontFamily:"var(--fm)",fontSize:13,fontWeight:700,color:tx.amount>0?"var(--green)":"var(--red)"}}>{(tx.amount>0?"+":"") + Math.abs(tx.amount||0).toFixed(2)}</div>
               </div>
             ))}
           </div>
@@ -1161,7 +1161,7 @@ function MainApp({ isGuest, onGuestBet }) {
                             <div style={{fontFamily:"var(--fm)",fontSize:10,color:"var(--muted2)",marginTop:3}}>{b.prediction ? b.prediction.options[b.optionIdx] : ""}</div>
                           </div>
                           <div style={{fontFamily:"var(--fm)",fontSize:13,fontWeight:700,color:b.status==="won"?"var(--green)":b.status==="lost"?"var(--red)":"var(--yellow)"}}>
-                            {b.status==="won" ? "+$"+b.payout.toFixed(2) : b.status==="lost" ? "-$"+b.amount.toFixed(2) : t.pending}
+                            {b.status==="won" ? "+$"+(b.payout||0).toFixed(2) : b.status==="lost" ? "-$"+(b.amount||0).toFixed(2) : t.pending}
                           </div>
                         </div>
                       ))
@@ -1207,7 +1207,7 @@ function MainApp({ isGuest, onGuestBet }) {
                                 <div className="hist-meta">{b.prediction ? b.prediction.options[b.optionIdx] : ""}</div>
                               </div>
                               <div className={"hist-res " + (b.status==="won"?"w":b.status==="lost"?"l":"")}>
-                                {b.status==="won" ? "+$"+b.payout.toFixed(2) : b.status==="lost" ? "-$"+b.amount.toFixed(2) : "..."}
+                                {b.status==="won" ? "+$"+(b.payout||0).toFixed(2) : b.status==="lost" ? "-$"+(b.amount||0).toFixed(2) : "..."}
                               </div>
                             </div>
                           ))
@@ -1328,7 +1328,7 @@ function MainApp({ isGuest, onGuestBet }) {
                 </div>
                 {wallet && (
                   <div style={{marginLeft:"auto",textAlign:"right"}}>
-                    <div style={{fontFamily:"var(--fm)",fontSize:15,fontWeight:700,color:"var(--green)"}}>${wallet.balance.toFixed(2)}</div>
+                    <div style={{fontFamily:"var(--fm)",fontSize:15,fontWeight:700,color:"var(--green)"}}>${wallet ? wallet.balance.toFixed(2) : "0.00"}</div>
                     <div style={{fontSize:9,color:"var(--muted)",letterSpacing:1,textTransform:"uppercase"}}>{t.balance}</div>
                   </div>
                 )}
